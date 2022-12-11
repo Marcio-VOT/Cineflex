@@ -1,38 +1,56 @@
 import React from "react";
 import styled from "styled-components";
 import Footer from "./Footer";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default () => {
+  const { idSessao } = useParams();
+  const [seats, setSeats] = useState(undefined);
+
+  useEffect(() => {
+    const promisse = axios.get(
+      `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`
+    );
+    promisse.then((resposta) => setSeats(resposta.data));
+  }, []);
+
+  if (seats === undefined) return <div>carregando</div>;
   return (
     <>
       <Container>
         <h1>Selecione o(s) assento(s) </h1>
-        <SeatsStyle>
-          <button>1</button>
-          <button>2</button>
-          <button>3</button>
-          <button>4</button>
-          <button>5</button>
-          <button>6</button>
-          <button>7</button>
-          <button>8</button>
-        </SeatsStyle>
-        <SeatsStyle>
+        <SeatsContainer>
+          {seats.seats.map((a) => {
+            return (
+              <SeatsStyle disponivel={a.isAvailable} key={a.id}>
+                {a.name}
+              </SeatsStyle>
+            );
+          })}
+        </SeatsContainer>
+        <SeatsContainer>
           <div>
-            <button style={{ background: "green" }}></button>
+            <SeatsStyle style={{ background: "green" }}></SeatsStyle>
             <p>selecionado</p>
           </div>
           <div>
-            <button></button>
+            <SeatsStyle></SeatsStyle>
             <p>disponível</p>
           </div>
           <div>
-            <button style={{ background: "yellow" }}></button>
+            <SeatsStyle style={{ background: "yellow" }}></SeatsStyle>
             <p>indisponível</p>
           </div>
-        </SeatsStyle>
+        </SeatsContainer>
       </Container>
-      <Footer />
+      <Footer
+        posterURL={seats.movie.posterURL}
+        title={seats.movie.title}
+        time={seats.day.weekday + " - " + seats.day.date}
+      />
     </>
   );
 };
@@ -48,18 +66,12 @@ const Container = styled.div`
     height: 110px;
   }
 `;
-const SeatsStyle = styled.div`
+const SeatsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   justify-content: space-around;
-  button {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background-color: lightgray;
-    border-style: none;
-  }
+
   div {
     margin-top: 20px;
     display: flex;
@@ -68,4 +80,13 @@ const SeatsStyle = styled.div`
     justify-content: center;
     align-items: center;
   }
+`;
+
+const SeatsStyle = styled.button`
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: ${(props) =>
+    props.disponivel ? "lightgreen" : "lightyellow"}
+  border-style: none;
 `;

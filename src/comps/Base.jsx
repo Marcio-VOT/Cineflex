@@ -1,23 +1,20 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-export default () => {
-  let imagem =
-    "https://br.web.img2.acsta.net/pictures/20/08/18/16/25/0872062.jpg";
+export default (props) => {
   return (
-    <>
-      <Container>
-        <p>Selecione o filme</p>
-        <img src={imagem} />
-        <img src={imagem} />
-        <img src={imagem} />
-        <img src={imagem} />
-        <img src={imagem} />
-        <img src={imagem} />
-        <img src={imagem} />
-        <img src={imagem} />
-      </Container>
-    </>
+    <Container>
+      <p>Selecione o filme</p>
+      {props.film.map((a) => {
+        return (
+          <Link to={"/sessoes/" + a.id}>
+            <img key={a.id} src={a.posterURL} alt={a.title} />
+          </Link>
+        );
+      })}
+    </Container>
   );
 };
 const Container = styled.div`

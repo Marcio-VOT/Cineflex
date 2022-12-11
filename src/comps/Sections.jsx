@@ -1,22 +1,50 @@
 import React from "react";
 import styled from "styled-components";
 import Footer from "./Footer";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default () => {
+  const { idFilme } = useParams();
+  let [sectionsList, setSectionsList] = useState(undefined);
+
+  useEffect(() => {
+    const promisse = axios.get(
+      `https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`
+    );
+    promisse.then((resposta) => {
+      setSectionsList(resposta.data);
+      console.log(resposta.data);
+    });
+  }, []);
+
+  if (sectionsList === undefined) return <div>carregando</div>;
+
   return (
     <>
       <Container>
         <p>Selecione o horário</p>
-        <Date>
-          <h3>Quinta-feira - 24/06/2021</h3>
-          <button>15:00</button> <button>19:00</button>
-        </Date>
-        <Date>
-          <h3>Quinta-feira - 24/06/2021</h3>
-          <button>15:00</button> <button>19:00</button>
-        </Date>
+
+        {sectionsList.days.map((a) => {
+          return (
+            <Date key={a.id}>
+              <h3>
+                {a.weekday} - {a.date}
+              </h3>
+              {a.showtimes.map((b) => {
+                return (
+                  <Link to={`/assentos/${b.id}`}>
+                    <button key={b.id}>{b.name}</button>
+                  </Link>
+                );
+              })}
+            </Date>
+          );
+        })}
       </Container>
-      <Footer />
+      <Footer posterURL={sectionsList.posterURL} title={sectionsList.title} />
     </>
   );
 };

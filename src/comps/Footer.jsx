@@ -1,15 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-export default () => {
-  let imagem =
-    "https://br.web.img2.acsta.net/pictures/20/08/18/16/25/0872062.jpg";
+export default (props) => {
   return (
     <FooterStyle>
-      <img src={imagem} />
+      <img src={props.posterURL} />
       <div>
-        <h1>Nome do filme</h1>
-        <h1>Horário, caso esteja na tela assentos</h1>
+        <h1>{props.title}</h1>
+        <h1>{props.time ? props.time : ""}</h1>
       </div>
     </FooterStyle>
   );
