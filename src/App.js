@@ -12,6 +12,9 @@ import Base from "./comps/Base";
 export default function() {
   const filmList = "https://mock-api.driven.com.br/api/v8/cineflex/movies";
   const [card, setCard] = useState([]);
+  const [displayFilm, setDisplayFilm] = useState(undefined);
+  const [displaySeats, setDisplaySeats] = useState(undefined);
+  const [displayBuyer, setDisplayBuyer] = useState(undefined);
 
   useEffect(() => {
     const promisse = axios.get(filmList);
@@ -25,8 +28,26 @@ export default function() {
       <Routes>
         <Route path="/" element={<Base film={card} />} />
         <Route path="/sessoes/:idFilme" element={<Sections />} />
-        <Route path="/assentos/:idSessao" element={<Seats />} />
-        <Route path="/sucesso" element={<Success />} />
+        <Route
+          path="/assentos/:idSessao"
+          element={
+            <Seats
+              setDisplayFilm={setDisplayFilm}
+              setDisplaySeats={setDisplaySeats}
+              setDisplayBuyer={setDisplayBuyer}
+            />
+          }
+        />
+        <Route
+          path="/sucesso"
+          element={
+            <Success
+              displayFilm={displayFilm}
+              displaySeats={displaySeats}
+              displayBuyer={displayBuyer}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

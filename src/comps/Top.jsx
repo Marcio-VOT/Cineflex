@@ -16,10 +16,15 @@ const TopStyled = styled.div`
   top: 0;
   width: 100%;
   height: 67px;
-  background-color: lightgray;
+  background-color: #c3cfd9;
   align-items: center;
   justify-content: center;
   p {
-    color: orange;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 40px;
+    color: #e8833a;
   }
 `;

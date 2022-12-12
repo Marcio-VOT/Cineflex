@@ -29,14 +29,16 @@ export default () => {
 
         {sectionsList.days.map((a) => {
           return (
-            <Date key={a.id}>
+            <Date data-test="movie-day" key={a.id}>
               <h3>
                 {a.weekday} - {a.date}
               </h3>
               {a.showtimes.map((b) => {
                 return (
                   <Link to={`/assentos/${b.id}`}>
-                    <button key={b.id}>{b.name}</button>
+                    <button data-test="showtime" key={b.id}>
+                      {b.name}
+                    </button>
                   </Link>
                 );
               })}
@@ -52,23 +54,56 @@ export default () => {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 117px;
   p {
     display: flex;
     width: 100%;
-    height: 80px;
+    height: 110px;
     justify-content: center;
     align-items: center;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.04em;
+
+    color: #293845;
   }
 `;
 const Date = styled.div`
   width: 100%;
   margin-bottom: 20px;
+  margin-left: 23px;
   button {
-    margin-top: 10px;
+    margin-top: 22px;
     width: 83px;
     height: 43px;
     background-color: orange;
     border-style: none;
-    border-radius: 5%;
+    border-radius: 3%;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: 0.02em;
+    margin-right: 8px;
+    color: #ffffff;
+  }
+  h3 {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.02em;
+
+    color: #293845;
   }
 `;
