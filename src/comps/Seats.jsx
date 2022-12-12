@@ -18,13 +18,13 @@ export default (props) => {
   const [seats, setSeats] = useState(undefined);
   const [assento, setAssento] = useState([]);
   const [name, setName] = useState("");
-  const [cpf, setCpf] = useState(undefined);
+  const [cpf, setCpf] = useState("");
   const navigate = useNavigate();
   const [seatNumber, setSeatNumber] = useState([]);
 
   function reservSeats(event) {
     event.preventDefault();
-    if (assento[0] === undefined) {
+    if (assento[0] === undefined || cpf.length < 11) {
       return 0;
     } else {
       const promisse = axios.post(
@@ -93,7 +93,7 @@ export default (props) => {
           placeholder="Digite seu nome..."
           type="text"
           id="name"
-          required={true}
+          required
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -103,12 +103,13 @@ export default (props) => {
           placeholder="Digite seu CPF..."
           type="number"
           id="cpf"
-          min={10000000000}
-          required={true}
+          required
           value={cpf}
           onChange={(e) => setCpf(e.target.value.slice(0, 11))}
         />
-        <button type="submit">Reservat assento(s)</button>
+        <button data-test="book-seat-btn" type="submit">
+          Reservat assento(s)
+        </button>
       </FormData>
       <Footer
         posterURL={seats.movie.posterURL}
